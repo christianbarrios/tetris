@@ -7,6 +7,13 @@
 
 A classic Tetris game built from scratch using pure **HTML**, **CSS**, and **JavaScript**. This project is a simple, fun, and educational exercise in core web development, showcasing how to handle game logic and rendering entirely on the frontend.
 
+### **Play the Game\!**
+
+You can play the live version of this game right now by clicking the link below:
+
+**[Play Tetris Classic](https://christianbarrios.github.io/tetris/)**
+
+
 -----
 
 ### **Features**
@@ -58,4 +65,5 @@ This project is a single-page application and does not require any backend serve
   * **Sound Effects:** Add audio for piece movements, rotations, and line clears.
 
 -----
+
 
