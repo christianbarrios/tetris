@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerId = null;
     let gameOver = false;
 
+    // Tetromino shapes and their rotations
     const tetrominoes = {
         I: [
             [width, width + 1, width + 2, width + 3],
@@ -54,49 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         O: 'tetromino-O', S: 'tetromino-S', T: 'tetromino-T', Z: 'tetromino-Z'
     };
     
-    // Wall Kick Data (Super Rotation System simplified)
+    // Wall Kick Data (Super Rotation System)
     const wallKickData = {
-        'J': {
-            '0_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '1_0': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '1_2': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '2_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '2_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
-            '3_2': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '3_0': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '0_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]]
-        },
-        'L': {
-            '0_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '1_0': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '1_2': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '2_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '2_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
-            '3_2': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '3_0': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '0_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]]
-        },
-        'T': {
-            '0_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '1_0': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '1_2': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '2_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '2_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
-            '3_2': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '3_0': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '0_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]]
-        },
-        'S': {
-            '0_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '1_0': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '1_2': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-            '2_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-            '2_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
-            '3_2': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '3_0': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-            '0_3': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]]
-        },
-        'Z': {
+        'JLTZ': {
             '0_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
             '1_0': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
             '1_2': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
@@ -122,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Initialize the game board
     function initBoard() {
         gameBoard.innerHTML = '';
         board = [];
@@ -134,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Draw the current tetromino
     function draw() {
         if (!currentTetromino) return;
         const shape = tetrominoes[currentTetromino.type][rotation];
@@ -149,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Undraw the current tetromino
     function undraw() {
         if (!currentTetromino) return;
         const shape = tetrominoes[currentTetromino.type][rotation];
@@ -164,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Generate a new random tetromino
     function generateTetromino() {
         const types = Object.keys(tetrominoes);
         const randomType = types[Math.floor(Math.random() * types.length)];
@@ -179,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Move tetromino down
     function moveDown() {
         undraw();
         const nextPosition = currentPosition + width;
@@ -192,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Move tetromino left
     function moveLeft() {
         undraw();
         const nextPosition = currentPosition - 1;
@@ -202,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         draw();
     }
 
-    // Move tetromino right
     function moveRight() {
         undraw();
         const nextPosition = currentPosition + 1;
@@ -212,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         draw();
     }
 
-    // Rotate tetromino
     function rotate() {
         const originalRotation = rotation;
         const originalPosition = currentPosition;
@@ -223,8 +176,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const nextShape = tetrominoes[currentTetromino.type][nextRotation];
         
-        const rotationKey = `${originalRotation}_${nextRotation}`;
-        const kicks = wallKickData[currentTetromino.type][rotationKey];
+        let rotationKey;
+        if (currentTetromino.type === 'O') {
+             rotationKey = '0_1'; // La O no rota, siempre usa el mismo kick
+        } else if (['J', 'L', 'T', 'S', 'Z'].includes(currentTetromino.type)) {
+            rotationKey = `${originalRotation}_${nextRotation}`;
+        } else { // I piece
+            rotationKey = `${originalRotation}_${nextRotation}`;
+        }
+        
+        const kicks = wallKickData[currentTetromino.type === 'I' ? 'I' : currentTetromino.type === 'O' ? 'O' : 'JLTZ'][rotationKey];
 
         let rotationSuccessful = false;
 
@@ -247,29 +208,21 @@ document.addEventListener('DOMContentLoaded', () => {
         draw();
     }
 
-    // Check if a move is valid
     function isValidMove(testPosition, shape) {
         return shape.every(index => {
             const newCellIndex = testPosition + index;
-            const newX = newCellIndex % width;
-            const newY = Math.floor(newCellIndex / width);
-            const pieceX = index % width;
 
             if (newCellIndex < 0 || newCellIndex >= width * height) return false;
-            
-            if (Math.floor((testPosition + index) / width) !== newY) {
-                if (Math.abs(newX - pieceX) > 1 && Math.abs(newY - Math.floor(index / width)) > 1) {
-                    return false;
-                }
-            }
 
-            if(gameBoard.children[newCellIndex].classList.contains('tetromino-fixed')) return false;
+            const x = newCellIndex % width;
+            if (x < 0 || x >= width) return false;
+
+            if (gameBoard.children[newCellIndex].classList.contains('tetromino-fixed')) return false;
 
             return true;
         });
     }
-
-    // Fix the tetromino when it lands
+    
     function freeze() {
         const shape = tetrominoes[currentTetromino.type][rotation];
         shape.forEach(index => {
@@ -283,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.textContent = score;
     }
 
-    // Check and clear completed rows
     function checkRows() {
         for (let r = 0; r < height; r++) {
             const rowStart = r * width;
@@ -309,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Handle keyboard events
     function control(e) {
         if (gameOver) return;
         if (e.key === 'ArrowLeft') {
@@ -323,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Start the game
     function startGame() {
         if (timerId) clearInterval(timerId);
         gameOver = false;
@@ -335,12 +285,11 @@ document.addEventListener('DOMContentLoaded', () => {
         timerId = setInterval(moveDown, 1000);
     }
 
-    // End the game
     function endGame() {
         clearInterval(timerId);
         gameOver = true;
         document.removeEventListener('keydown', control);
-        alert('Game Over! Final Score: ' + score);
+        alert('¡Game Over! Puntuación final: ' + score);
     }
 
     startButton.addEventListener('click', startGame);
