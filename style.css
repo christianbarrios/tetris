@@ -71,3 +71,45 @@ button {
 button:hover {
     background-color: #21a1f1;
 }
+
+
+
+/* Estilos para los controles táctiles */
+.touch-controls {
+    display: none; /* Oculto por defecto en desktop */
+    margin-top: 20px;
+    text-align: center;
+}
+
+.touch-controls .row {
+    margin-bottom: 10px;
+}
+
+.touch-controls button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Media Query para mostrar los controles en dispositivos móviles */
+@media (max-width: 768px) {
+    .touch-controls {
+        display: block; /* Muestra los controles táctiles en pantallas pequeñas */
+    }
+
+    .game-container {
+        padding: 10px;
+    }
+
+    #game-board {
+        width: 300px;
+        height: 600px;
+        grid-template-columns: repeat(10, 30px);
+        grid-template-rows: repeat(20, 30px);
+    }
+}

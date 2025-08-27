@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     const startButton = document.getElementById('start-button');
 
+    const leftButton = document.getElementById('left-button');
+    const rightButton = document.getElementById('right-button');
+    const downButton = document.getElementById('down-button');
+    const rotateButton = document.getElementById('rotate-button');
+
     const width = 10;
     const height = 20;
     let board = [];
@@ -414,6 +419,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     startButton.addEventListener('click', startGame);
+    leftButton.addEventListener('click', moveLeft);
+    rightButton.addEventListener('click', moveRight);
+    downButton.addEventListener('click', moveDown);
+    rotateButton.addEventListener('click', rotate);
+
 
     initBoard(); // Initialize board on page load
 });
