@@ -31,7 +31,7 @@
 }
 
 #benefits-list li::before {
-    content: "🧠"; /* Emoji de cerebro como viñeta */
+    content: "🧠";
     position: absolute;
     left: 0;
 }
@@ -52,9 +52,7 @@
     background-color: #27ae60;
 }
 
-/* ... (tus estilos existentes para el juego de Tetris) ... */
-
-
+/* Estilos para el juego de Tetris */
 body {
     background-color: #2c3e50;
     color: white;
@@ -93,7 +91,8 @@ h1 {
     width: 30px;
     height: 30px;
     box-sizing: border-box;
-    border: 1px solid #1a1a1a;
+    /* Borde normal, solo el interior de las celdas */
+    border: 1px solid #1a1a1a; 
 }
 
 .tetromino-I { background-color: cyan; }
@@ -104,8 +103,13 @@ h1 {
 .tetromino-T { background-color: purple; }
 .tetromino-Z { background-color: red; }
 
+/* El problema del "doble borde" en móvil se soluciona aquí.
+   La clase `tetromino-fixed` ya no tiene un borde adicional.
+   En su lugar, los bordes de la celda `.grid-cell` se usan para
+   dar un aspecto tridimensional.
+*/
 .tetromino-fixed {
-    border: 1px solid #7f8c8d;
+    /* No se necesita un borde extra aquí, ya que la celda base ya lo tiene */
 }
 
 .controls {
@@ -118,7 +122,7 @@ h1 {
     margin-bottom: 10px;
 }
 
-#start-button {
+#start-button, #pause-button {
     font-size: 1.2rem;
     padding: 10px 20px;
     cursor: pointer;
@@ -126,19 +130,10 @@ h1 {
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-#pause-button {
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-/* Hide touch controls by default */
 .touch-controls {
     display: none;
     margin-top: 20px;
@@ -160,23 +155,61 @@ h1 {
     border-radius: 5px;
 }
 
-/* Media Query for small screens (phones) */
+/* ---------------------------------------------------- */
+/* Media Queries para una experiencia móvil completa  */
+/* ---------------------------------------------------- */
 @media (max-width: 600px) {
-    .touch-controls {
-        display: block; 
+    /* Ajustes para la página de inicio */
+    .landing-container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 15px;
     }
     
+    #main-title {
+        font-size: 2rem;
+    }
+
+    #description-text,
+    .benefits-section,
+    .start-button {
+        font-size: 1rem;
+    }
+    
+    .start-button {
+        padding: 8px 20px;
+    }
+
+    /* Ajustes para el juego de Tetris */
+    body {
+        /* Permite que el contenido se desplace verticalmente */
+        display: block;
+        min-height: auto;
+    }
+
     .game-container {
         padding: 10px;
-        transform: scale(0.85);
-        transform-origin: top;
+        /* Escala el contenedor principal para que quepa en la pantalla */
+        transform: scale(0.9);
+        transform-origin: top center;
+    }
+
+    #game-board {
+        width: 200px;
+        height: 400px;
+        grid-template-columns: repeat(10, 20px);
+        grid-template-rows: repeat(20, 20px);
     }
     
-    #game-board {
-        width: 250px;
-        height: 500px;
-        grid-template-columns: repeat(10, 25px);
-        grid-template-rows: repeat(20, 25px);
+    .grid-cell {
+        /* Ajustar el tamaño de la celda y del borde para móviles */
+        width: 20px;
+        height: 20px;
+        border: 0.5px solid #1a1a1a; 
+    }
+
+    .touch-controls {
+        display: block; 
     }
 
     .touch-controls button {
