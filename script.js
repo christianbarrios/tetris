@@ -348,24 +348,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const timerDisplay = document.getElementById('timer');
+    let gameTime = 0;
+    let timerInterval = null;
+
+    // ... (Your existing code here, before the functions) ...
+    
+    // START NEW CODE
+
+    function updateTimer() {
+        gameTime++;
+        const minutes = Math.floor(gameTime / 60);
+        const seconds = gameTime % 60;
+        
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+        const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+        timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    function startTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    function resetTimer() {
+        gameTime = 0;
+        timerDisplay.textContent = '00:00';
+    }
+
+
     // Start the game
     function startGame() {
-        if (timerId) clearInterval(timerId); // Clear any existing game
+        if (timerId) clearInterval(timerId);
         gameOver = false;
         score = 0;
         scoreDisplay.textContent = score;
         initBoard();
         generateTetromino();
         document.addEventListener('keydown', control);
-        timerId = setInterval(moveDown, 1000); // Piece falls every 1 second
+        timerId = setInterval(moveDown, 1000);
+        
+        // ---
+        // NEW LINE TO ADD
+        // ---
+        startTimer(); // Start the timer
     }
 
     // End the game
     function endGame() {
         clearInterval(timerId);
+        // ---
+        // NEW LINE TO ADD
+        // ---
+        stopTimer(); // Stop the timer
         gameOver = true;
         document.removeEventListener('keydown', control);
-        alert('Game Over! Final Score: ' + score);
+        alert('¡Game Over! Puntuación final: ' + score);
     }
 
     startButton.addEventListener('click', startGame);
