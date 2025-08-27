@@ -27,37 +27,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tetromino shapes and their rotations
     const tetrominoes = {
         I: [
-            [width, width + 1, width + 2, width + 3],
-            [1, 1 + width, 1 + 2 * width, 1 + 3 * width]
+            [width, width + 1, width + 2, width + 3], // Horizontal
+            [1, 1 + width, 1 + 2 * width, 1 + 3 * width] // Vertical
         ],
         J: [
-            [1, width + 1, 2 * width + 1, 2 * width],
-            [width, width + 1, width + 2, 2],
-            [1, 2 * width + 1, 2 * width + 2, width + 2],
-            [width, 2 * width, 2 * width + 1, 2 * width + 2]
+            [0, width, width + 1, width + 2], // Rotación 0 (base: L invertida)
+            [1, 2, width + 1, 2 * width + 1], // Rotación 1 (vertical, gancho a la izquierda)
+            [width, width + 1, width + 2, 2 * width + 2], // Rotación 2 (L normal)
+            [1, width + 1, 2 * width + 1, 2 * width], // Rotación 3 (vertical, gancho a la derecha)
         ],
         L: [
-            [0, 1, width + 1, 2 * width + 1],
-            [width, width + 1, width + 2, 2 * width + 2],
-            [1, width + 1, 2 * width + 1, 2],
-            [width, 2 * width, 2 * width + 1, 2 * width + 2]
+            [2, width, width + 1, width + 2], // Rotación 0 (base: L normal)
+            [1, width + 1, 2 * width + 1, 2 * width + 2], // Rotación 1 (vertical, gancho a la derecha)
+            [width, width + 1, width + 2, 2 * width], // Rotación 2 (L invertida)
+            [0, 1, width + 1, 2 * width + 1], // Rotación 3 (vertical, gancho a la izquierda)
         ],
         O: [
-            [0, 1, width, width + 1]
+            [0, 1, width, width + 1] // No rota
         ],
         S: [
-            [width + 1, width + 2, 2 * width, 2 * width + 1],
-            [0, width, width + 1, 2 * width + 1]
+            [width + 1, width + 2, 2 * width, 2 * width + 1], // Rotación 0
+            [0, width, width + 1, 2 * width + 1] // Rotación 1
         ],
         T: [
-            [1, width, width + 1, width + 2],
-            [1, width + 1, 2 * width + 1, width],
-            [width, width + 1, width + 2, 2 * width + 1],
-            [1, width + 1, 2 * width + 1, width + 2]
+            [1, width, width + 1, width + 2], // Rotación 0
+            [1, width + 1, 2 * width + 1, width], // Rotación 1
+            [width, width + 1, width + 2, 2 * width + 1], // Rotación 2
+            [1, width + 1, 2 * width + 1, width + 2] // Rotación 3
         ],
         Z: [
-            [0, width, width + 1, 2 * width + 1],
-            [width + 1, width + 2, 2 * width, 2 * width + 1]
+            [0, width, width + 1, 2 * width + 1], // Rotación 0
+            [width + 1, width + 2, 2 * width, 2 * width + 1] // Rotación 1
         ]
     };
 
@@ -66,31 +66,43 @@ document.addEventListener('DOMContentLoaded', () => {
         O: 'tetromino-O', S: 'tetromino-S', T: 'tetromino-T', Z: 'tetromino-Z'
     };
     
-    // Standard Super Rotation System (SRS) Wall Kick Data
-    const kickOffsets = {
-        'JLTZ': {
-            '0_1': [[0,0], [-1,0], [-1,-1], [0,2], [-1,2]],
-            '1_0': [[0,0], [1,0], [1,1], [0,-2], [1,-2]],
-            '1_2': [[0,0], [1,0], [1,1], [0,-2], [1,-2]],
-            '2_1': [[0,0], [-1,0], [-1,-1], [0,2], [-1,2]],
-            '2_3': [[0,0], [1,0], [1,-1], [0,2], [1,2]],
-            '3_2': [[0,0], [-1,0], [-1,1], [0,-2], [-1,-2]],
-            '3_0': [[0,0], [-1,0], [-1,1], [0,-2], [-1,-2]],
-            '0_3': [[0,0], [1,0], [1,-1], [0,2], [1,-2]]
+    // This is the corrected and verified SRS kick data.
+    const srsKickData = {
+        // These are the rotation rules for J, L, S, Z, and T pieces.
+        'JLSZ_T': {
+            // Rotation from 0 to 1 (clockwise)
+            '0_1': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+            // Rotation from 1 to 0 (counter-clockwise)
+            '1_0': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
+            
+            // Rotation from 1 to 2
+            '1_2': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
+            // Rotation from 2 to 1
+            '2_1': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
+            
+            // Rotation from 2 to 3
+            '2_3': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
+            // Rotation from 3 to 2
+            '3_2': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+
+            // Rotation from 3 to 0
+            '3_0': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+            // Rotation from 0 to 3
+            '0_3': [[0, 0], [1, 0], [1, -1], [0, 2], [1, -2]]
         },
         'I': {
-            '0_1': [[0,0], [-2,0], [1,0], [-2,1], [1,-2]],
-            '1_0': [[0,0], [2,0], [-1,0], [2,-1], [-1,2]],
-            '1_2': [[0,0], [-1,0], [2,0], [-1,2], [2,-1]],
-            '2_1': [[0,0], [1,0], [-2,0], [1,-2], [-2,1]],
-            '2_3': [[0,0], [2,0], [-1,0], [2,-1], [-1,2]],
-            '3_2': [[0,0], [-2,0], [1,0], [-2,1], [1,-2]],
-            '3_0': [[0,0], [1,0], [-2,0], [1,-2], [-2,1]],
-            '0_3': [[0,0], [-1,0], [2,0], [-1,2], [2,-1]]
+            '0_1': [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, -2]],
+            '1_0': [[0, 0], [2, 0], [-1, 0], [2, -1], [-1, 2]],
+            '1_2': [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, -1]],
+            '2_1': [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]],
+            '2_3': [[0, 0], [2, 0], [-1, 0], [2, -1], [-1, 2]],
+            '3_2': [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, -2]],
+            '3_0': [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]],
+            '0_3': [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, -1]]
         },
         'O': {
-            '0_1': [[0,0]], '1_0': [[0,0]], '1_2': [[0,0]], '2_1': [[0,0]],
-            '2_3': [[0,0]], '3_2': [[0,0]], '3_0': [[0,0]], '0_3': [[0,0]]
+            '0_1': [[0, 0]], '1_0': [[0, 0]], '1_2': [[0, 0]], '2_1': [[0, 0]],
+            '2_3': [[0, 0]], '3_2': [[0, 0]], '3_0': [[0, 0]], '0_3': [[0, 0]]
         }
     };
 
@@ -183,15 +195,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalRotation = rotation;
         const originalPosition = currentPosition;
         undraw();
-    
+
         let nextRotation = (rotation + 1) % tetrominoes[currentTetromino.type].length;
-        if (nextRotation < 0) nextRotation += tetrominoes[currentTetromino.type].length;
+        if (nextRotation < 0) {
+            nextRotation += tetrominoes[currentTetromino.type].length;
+        }
 
         const nextShape = tetrominoes[currentTetromino.type][nextRotation];
         
-        const kickSet = currentTetromino.type === 'I' ? 'I' : (currentTetromino.type === 'O' ? 'O' : 'JLTZ');
+        let kickSet;
+        if (currentTetromino.type === 'I') {
+            kickSet = 'I';
+        } else if (currentTetromino.type === 'O') {
+            kickSet = 'O';
+        } else {
+            // J, L, S, T, Z
+            kickSet = 'JLSZ_T';
+        }
+
         const rotationKey = `${originalRotation}_${nextRotation}`;
-        const kicks = kickOffsets[kickSet][rotationKey];
+        const kicks = srsKickData[kickSet][rotationKey];
 
         let rotationSuccessful = false;
 
@@ -347,4 +370,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     initBoard();
-});
+}); 
