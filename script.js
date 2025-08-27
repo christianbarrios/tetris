@@ -367,6 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         resetTimer();
         startGame();
+        startButton.blur();
     });
 
     initBoard();

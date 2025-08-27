@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Classic</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Tetris Classic</h1>
+        <p>Time: <span id="timer">00:00</span></p>
+        <div id="game-board"></div>
+        <div class="controls">
+            <p>Score: <span id="score">0</span></p>
+            <button id="start-button">Start Game</button>
+        </div>
+        
+        <div class="touch-controls">
+            <div class="row">
+                <button id="rotate-button">Rotate</button>
+            </div>
+            <div class="row">
+                <button id="left-button">Left</button>
+                <button id="down-button">Down</button>
+                <button id="right-button">Right</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

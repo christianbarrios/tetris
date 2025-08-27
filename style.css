@@ -1,3 +1,60 @@
+/* Estilos para la página de inicio */
+.landing-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #34495e;
+    border-radius: 10px;
+}
+
+#main-title {
+    color: #3498db;
+}
+
+.benefits-section {
+    margin-top: 20px;
+    text-align: left;
+    border-top: 2px solid #3498db;
+    padding-top: 20px;
+}
+
+#benefits-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#benefits-list li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+#benefits-list li::before {
+    content: "🧠"; /* Emoji de cerebro como viñeta */
+    position: absolute;
+    left: 0;
+}
+
+.start-button {
+    display: inline-block;
+    padding: 10px 30px;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #2ecc71;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #27ae60;
+}
+
+/* ... (tus estilos existentes para el juego de Tetris) ... */
+
+
 body {
     background-color: #2c3e50;
     color: white;
@@ -62,6 +119,16 @@ h1 {
 }
 
 #start-button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#pause-button {
     font-size: 1.2rem;
     padding: 10px 20px;
     cursor: pointer;
